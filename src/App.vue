@@ -244,6 +244,9 @@ export default {
       this.tickers
         .filter(t => t.name === tickerName)
         .forEach(t => {
+          if (t === this.selectedTicker) {
+            this.graph.push(price);
+          }
           t.price = price;
         });
     },
@@ -254,15 +257,6 @@ export default {
       return price > 1 ? price.toFixed(2) : price.toPrecision(2);
     },
 
-    async updateTickers() {
-      // if (!this.tickers.length) {
-      //   return;
-      // }
-      // this.tickers.forEach(ticker => {
-      //   const price = exchangeData[ticker.name.toUpperCase()];
-      //   ticker.price = price ?? "-";
-      // });
-    },
     add() {
       const currentTicker = {
         name: this.ticker.toUpperCase(),
@@ -276,9 +270,11 @@ export default {
         this.updateTicker(currentTicker.name, newPrice)
       );
     },
+
     select(ticker) {
       this.selectedTicker = ticker;
     },
+
     handleDelete(tickerToRemove) {
       this.tickers = this.tickers.filter(t => t != tickerToRemove);
       if (this.selectedTicker === tickerToRemove) {
